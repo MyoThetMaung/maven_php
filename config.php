@@ -2,7 +2,7 @@
 
     return [
 
-        'data' => [
+        'data_base' => [
             'connection' => 'mysql:host=localhost;',
             'name' => 'dbname=maven',
             'user' => 'root',
