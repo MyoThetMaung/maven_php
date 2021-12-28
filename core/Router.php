@@ -2,7 +2,14 @@
 
     class Router{
 
-        protected $router = [];
+        protected $router = [
+            "GET" => [
+                // 'users' => 'controllers/user.php'
+            ],
+            "POST" => [
+                // 'users' => 'controllers/user.php'
+            ]
+        ];
 
         public static function load($file){
             $router = new static;
@@ -14,11 +21,35 @@
             return $this->router = $router;
         }
 
-        public function direct($uri){
-            if(array_key_exists($uri, $this->router)){
-                return $this->router[$uri];
-            }
+        public function get($uri,$controller){
+            return $this->router['GET'][$uri] = $controller;
         }
+
+        public function post($uri,$controller){
+            return $this->router['POST'][$uri] = $controller;
+        }
+
+        public function direct($uri,$request_type){
+
+            if(array_key_exists($uri, $this-> routes[$request_type])){
+
+                return $this->call_method(...explode('@',$this->routes[$request_type][$uri]));
+            }
+           
+        }
+
+        public function call_method($controller, $method){
+
+            $controller = new $controller;
+
+            if(!method_exists($controller, $method)){
+                
+                throw new Exception ('Method could not find!');
+            }
+            return $controller-> $method();
+        }
+
+       
     }
 
   
